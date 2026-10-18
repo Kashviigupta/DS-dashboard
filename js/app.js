@@ -10,7 +10,7 @@ function overview(){
     <div class="top"><span class="no">EXP ${String(e.no).padStart(2,'0')}</span>${done.includes(e.id)?'<span class="chip done">Done</span>':`<span class="chip">${e.cat}</span>`}</div>
     <div class="glyph">${glyph(e.id)}</div><h3>${e.short}</h3><p>${e.aim.split('.')[0]}.</p><span class="cx">${e.cx}</span></button>`).join('');
   return`<div class="ovhead"><div><span class="eyebrow">Data structures and algorithms</span><h1 style="margin-top:12px">Eight experiments, one dashboard</h1>
-   <p>Each experiment has the concept, a live visualizer you can operate, the algorithm steps, a complete C program and viva questions.</p></div>
+   <p>Each experiment has the concept, a live visualizer you can operate, the algorithm steps, and a complete C program.</p></div>
    <div class="ring">${ringSvg(done.length,EXPS.length)}<div><b>${done.length} / ${EXPS.length}</b><small>experiments completed</small></div></div></div>
   <div class="filters"><span class="eyebrow" style="margin-right:6px">Filter</span>${['All','Linear','Non-linear','Algorithms','Hashing'].map(c=>`<button class="btn sm" type="button" data-cat="${c}" aria-pressed="${c===cat}">${c}</button>`).join('')}</div>
   <div class="cards">${cards}</div>
@@ -18,20 +18,19 @@ function overview(){
   <div class="two"><div class="panel"><h2>Compile and run</h2><p class="sub">Every program is a complete menu-driven C file.</p><pre class="pcode" style="margin:0">gcc exp1.c -o exp1 -Wall
 ./exp1            # Linux / macOS
 exp1.exe          # Windows (MinGW)</pre></div>
-   <div class="panel"><h2>Before the viva</h2><p class="sub">A short checklist for every experiment.</p><ol class="steps"><li><span>Explain the structure and draw it.</span></li><li><span>State each operation with its time complexity.</span></li><li><span>Handle overflow, underflow and NULL cases.</span></li><li><span>Free any memory you allocate.</span></li></ol></div></div>`}
+   <div class="panel"><h2>Before you submit</h2><p class="sub">A short checklist for every experiment.</p><ol class="steps"><li><span>Explain the structure and draw it.</span></li><li><span>State each operation with its time complexity.</span></li><li><span>Handle overflow, underflow and NULL cases.</span></li><li><span>Free any memory you allocate.</span></li></ol></div></div>`}
 
 function expPage(e){
   const done=Store.get().includes(e.id),i=EXPS.indexOf(e);
   return`<div class="xhead"><span class="eyebrow">Experiment ${e.no} of 8 · ${e.cat}</span><h1>${e.title}</h1><p class="aim">${e.aim}</p>
    <div><button class="btn ${done?'acc':''}" type="button" id="markdone">${done?'✓ Marked complete':'Mark as complete'}</button></div></div>
-  <nav class="jump" aria-label="Sections"><a href="#" data-sec="concept">Concept</a><a href="#" data-sec="lab">Visualizer</a><a href="#" data-sec="algo">Algorithm</a><a href="#" data-sec="prog">C program</a><a href="#" data-sec="viva">Viva</a></nav>
+  <nav class="jump" aria-label="Sections"><a href="#" data-sec="concept">Concept</a><a href="#" data-sec="lab">Visualizer</a><a href="#" data-sec="algo">Algorithm</a><a href="#" data-sec="prog">C program</a></nav>
   <section class="sec" id="${e.id}-concept"><h2>Concept <small>what to know</small></h2><div class="cgrid">${e.concepts.map(c=>`<div class="concept"><h3>${c.h}</h3><p>${c.p}</p></div>`).join('')}</div></section>
   <section class="sec" id="${e.id}-lab"><h2>${e.lab} <small>try it</small></h2><div class="lab" id="${e.id}-labroot"></div></section>
   <section class="sec" id="${e.id}-algo"><h2>Algorithm <small>step by step</small></h2><div class="two"><div class="panel"><ol class="steps">${e.steps.map(s=>`<li><span>${s}</span></li>`).join('')}</ol></div>
    <div class="panel scroll"><table class="tb"><thead><tr><th>Operation</th><th>Cost</th><th>Why</th></tr></thead><tbody>${e.cplx.map(r=>`<tr><td>${r[0]}</td><td class="m">${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</tbody></table></div></div></section>
   <section class="sec" id="${e.id}-prog"><h2>C program <small>complete, menu driven</small></h2>
    <div class="codebox"><div class="codebar"><div class="codetabs" id="${e.id}-tabs">${e.code.map((c,k)=>`<button type="button" data-k="${k}" aria-selected="${k==0}">${c.label}</button>`).join('')}</div><div class="codeact"><button class="btn sm" type="button" id="${e.id}-copy">Copy</button><button class="btn sm" type="button" id="${e.id}-dl">Download .c</button></div></div><pre class="code" id="${e.id}-code" tabindex="0"></pre></div></section>
-  <section class="sec viva" id="${e.id}-viva"><h2>Viva questions <small>click to reveal</small></h2><div class="panel">${e.viva.map(v=>`<details><summary>${v[0]}</summary><p>${v[1]}</p></details>`).join('')}</div></section>
   <div class="pn">${i>0?`<button class="btn" type="button" data-go="${EXPS[i-1].id}">← Exp ${EXPS[i-1].no}: ${EXPS[i-1].short}</button>`:`<button class="btn" type="button" data-go="overview">← Overview</button>`}${i<EXPS.length-1?`<button class="btn pri" type="button" data-go="${EXPS[i+1].id}">Exp ${EXPS[i+1].no}: ${EXPS[i+1].short} →</button>`:`<button class="btn pri" type="button" data-go="overview">Back to overview</button>`}</div>`}
 
 function wireExp(e){
